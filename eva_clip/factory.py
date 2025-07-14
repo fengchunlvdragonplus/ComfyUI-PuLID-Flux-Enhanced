@@ -273,12 +273,13 @@ def create_model(
 
         pretrained_cfg = {}
         if pretrained:
-            checkpoint_path = ''
-            pretrained_cfg = get_pretrained_cfg(model_name, pretrained)
-            if pretrained_cfg:
-                checkpoint_path = download_pretrained(pretrained_cfg, cache_dir=cache_dir)
-            elif os.path.exists(pretrained):
-                checkpoint_path = pretrained
+            import folder_paths
+            checkpoint_path = os.path.join(folder_paths.get_folder_paths("clip")[1], "EVA02_CLIP_L_336_psz14_s6B.pt")
+            # pretrained_cfg = get_pretrained_cfg(model_name, pretrained)
+            # if pretrained_cfg:
+            #     checkpoint_path = download_pretrained(pretrained_cfg, cache_dir=cache_dir)
+            # elif os.path.exists(pretrained):
+            #     checkpoint_path = pretrained
 
             if checkpoint_path:
                 logging.info(f'Loading pretrained {model_name} weights ({pretrained}).')
@@ -290,7 +291,7 @@ def create_model(
             else:
                 error_str = (
                     f'Pretrained weights ({pretrained}) not found for model {model_name}.'
-                    f'Available pretrained tags ({list_pretrained_tags_by_model(model_name)}.')
+                    f'Available pretrained tags ({list_pretrained_tags_by_model(model_name)}).')
                 logging.warning(error_str)
                 raise RuntimeError(error_str)
         else:
